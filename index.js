@@ -9,6 +9,23 @@ const getQuotes = async()=>{
     await page.goto('http://quotes.toscrape.com/', {
         waitUntil: "domcontentloaded",
     });
+
+    //page.evaluate() is a Puppeteer method that allows you to 
+    //execute JavaScript code in the context of the web page.
+    const quotes = await page.evaluate(()=>{
+        const quoteList = document.querySelectorAll(".quote");
+
+        return Array.from(quoteList).map((quote)=>{
+            const text = quote.querySelector(".text").innerText;
+            const auther = quote.querySelector(".author").innerText;
+
+            return {text,auther};
+        });
+    });
+
+    console.log(quotes);
+
+    await browser.close();
 };
 
 getQuotes();
