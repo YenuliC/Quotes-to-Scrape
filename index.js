@@ -18,12 +18,18 @@ const getQuotes = async()=>{
         return Array.from(quoteList).map((quote)=>{
             const text = quote.querySelector(".text").innerText;
             const auther = quote.querySelector(".author").innerText;
+            const tags = Array.from(quote.querySelectorAll(".tags .tag")).map(tag => tag.innerText);
+            const aboutAuthor = 'http://quotes.toscrape.com/' + (quote.querySelector("a")?.getAttribute('href')); //access nested properties, methods, or DOM elements 
 
-            return {text,auther};
+            return {text,auther,tags: tags.join(' '),aboutAuthor };
         });
     });
 
     console.log(quotes);
+    
+    // Click on the "Next page" button
+    await page.click(".pager > .next > a");
+
 
     await browser.close();
 };
